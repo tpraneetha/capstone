@@ -8,6 +8,7 @@ const publicDirectoryPath=path.join(__dirname,'../public')
 const viewsPath=path.join(__dirname,'../templates/views')
 const partialsPath=path.join(__dirname,'../templates/partials')
 const app=express()
+const port=process.env.PORT || 8080
 //setup handle bars engine and views location
 app.set('view engine','hbs')
 app.set('views',viewsPath)
@@ -81,7 +82,7 @@ app.get('*',(req,res)=>{
         msg:'page not found',title:'Help page',name:'praneetha'
     })
 })
-const port=8080
+
 app.listen(port,()=>{
     console.log(`server is running on ${port}`);
 })
