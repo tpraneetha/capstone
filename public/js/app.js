@@ -17,10 +17,10 @@ console.log('client side js');
            if(data.error){
             message1.textContent=data.error
            }else{
-            
+            console.log(data);
             message1.textContent=data.location
             // message2.textContent='ho'
-            message2.textContent=data.forecast
+            message2.textContent=data
         // console.log(data.forecast);
         
            
