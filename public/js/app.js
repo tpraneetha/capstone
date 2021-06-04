@@ -19,8 +19,8 @@ console.log('client side js');
            }else{
             console.log(data);
             message1.textContent=data.location
-            // message2.textContent='ho'
-            message2.textContent=data
+            const stringifiedData=JSON.stringify(data.forecast)
+            message2.textContent=stringifiedData
         // console.log(data.forecast);
         
            

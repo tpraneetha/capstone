@@ -12,17 +12,17 @@ const forecast=(n1,n2,callback)=>{
     
            callback('Unable to find location', undefined)
         }else{
+         
+console.log(response.body.current.weather_descriptions[0]);
     
-    
-           callback(undefined,{temp:response.body.current.temperature,
-            rain:response.body.current.precip
-    })
-
-    
+           callback(undefined,{currently:response.body.current.temperature,
+            feelslike:response.body.current.feelslike,
+            weatherdesc:response.body.current.weather_descriptions[0],
+            chancesofrain:response.body.current.precip
+              
+   })
+   
 }})
 }
-
-
-
 
 module.exports=forecast
