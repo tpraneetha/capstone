@@ -6,7 +6,7 @@ console.log('client side js');
   const search=document.querySelector('input')
   const message1=document.querySelector('#message1')
   const message2=document.querySelector('#message2')
- 
+//  const imagepix=document.querySelector('#img')
   weatherForm.addEventListener('submit',(e)=>{
       e.preventDefault()
       const location=search.value
@@ -22,7 +22,7 @@ console.log('client side js');
             const stringifiedData=JSON.stringify(data.forecast)
             message2.textContent=stringifiedData
         // console.log(data.forecast);
-        
+        // imagepix.textContent=data.placename
            
         }})
     })

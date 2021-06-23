@@ -1,14 +1,22 @@
 const path=require('path')
 const express=require('express')
 const hbs=require('hbs')
-const geocode=require('./utils/geocode')
-const forecast=require('./utils/forecast')
+const dotenv = require('dotenv');
+const geonames=require('./utils/geonames')
+const pixaby=require('./utils/pixaby')
+const weatherbit=require('./utils/weatherbit')
+
+dotenv.config();
+
+const GEONAMES_USERNAME = process.env.GEONAMES_USERNAME;
+const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY;
+const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 //define paths for express config
 const publicDirectoryPath=path.join(__dirname,'../public')
 const viewsPath=path.join(__dirname,'../templates/views')
 const partialsPath=path.join(__dirname,'../templates/partials')
 const app=express()
-const port=process.env.PORT || 8080
+const port=process.env.PORT || 2000
 //setup handle bars engine and views location
 app.set('view engine','hbs')
 app.set('views',viewsPath)
@@ -22,38 +30,26 @@ app.get('',(req,res)=>{
         name:'praneetha'
     })
 })
-app.get('/about',(req,res)=>{
-    res.render('about',{
-        title:'weather app',
-        name:'praneetha'
 
-    })
-})
-app.get('/help',(req,res)=>{
-    res.render('help',{
-        msg:'help help',
-        title:'Help page',name:'praneetha'
-    })
-})
 app.get('/weather',(req,res)=>
 {
     if(!req.query.address){return res.send({
              error:'you must provide an address'
          })
      }
-     geocode(req.query.address,(error,{lat,lon,placeName}={})=>{
+     geonames(req.query.address,(error,{lat,lon,placeName}={})=>{
         if(error){
            return  res.send({
                error
            })
         }
-            forecast(lat,lon, (error, forecastdata) => {
+            weatherbit(lat,lon, (error, forecastdata) => {
                 if (error){
                     return  res.send({error})
                 }
                 res.send({
                     forecast:forecastdata,
-                    location:placeName,
+                    
                     address:req.query.address
 
                 })
@@ -62,24 +58,10 @@ app.get('/weather',(req,res)=>
     }    
     )
 })
-app.get('/products',(req,res)=>{
-    if(!req.query.search){
-       return res.send({
-            error:'you must provide a search term'
-        })
-    }
-    res.send({
-        products:[]
-    })
-})
-app.get('/help/*',(req,res)=>{
-    res.render('404page',{
-        msg:'Help article not found',title:'Help page',name:'praneetha'
-    })
-})
+
 app.get('*',(req,res)=>{
     res.render('404page',{
-        msg:'page not found',title:'Help page',name:'praneetha'
+        msg:'page not found',
     })
 })
 
