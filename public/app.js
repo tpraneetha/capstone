@@ -1,27 +1,27 @@
-const moment=require('moment')
+
+
+// //calculation of days from now to then
+
+// // const now=moment().format("DD-MM-YYYY")
+// // // const then = moment(now, "DD-MM-YYYY").add(5, 'days');
+// // const ms = 
+// // moment(then,"DD/MM/YYYY").diff(moment(now,"DD/MM/YYYY"));
+// // const duration = moment.duration(ms, 'milliseconds');
+// // const Diffdays = duration.asDays();
+
+
+
+
+
+
+// const moment=require('moment')
 const weatherTemp = document.getElementById('temperature');
 const weatherDes = document.getElementById('forecast');
 const weatherTitle = document.getElementById('desTitle');
 const image = document.getElementById('destinationpic');
-
+const daysAway = document.getElementById('daysAway');
 const departureDate = document.getElementById('departure');
 document.getElementById("submit").addEventListener("click", getcoordinates);
-
-
-
-//calculation of days from now to then
-
-// const now=moment().format("DD-MM-YYYY")
-// // const then = moment(now, "DD-MM-YYYY").add(5, 'days');
-// const ms = 
-// moment(then,"DD/MM/YYYY").diff(moment(now,"DD/MM/YYYY"));
-// const duration = moment.duration(ms, 'milliseconds');
-// const Diffdays = duration.asDays();
-
-
-
-
-
 
 function getcoordinates(event) {
   
@@ -36,7 +36,7 @@ function getcoordinates(event) {
           console.log(GEONAMES_USERNAME);
     console.log(WEATHERBIT_API_KEY);
     console.log(PIXABAY_API_KEY);
-    const now=moment().format("DD-MM-YYYY")
+    // const now=moment().format("DD-MM-YYYY")
             const destination = document.getElementById('destination').value;
             let departure = document.getElementById('departure').value;
             
@@ -103,7 +103,10 @@ function getImage(
           const img = data.hits[0].webformatURL;
           console.log(img);
 
-          
+          //imagine diff=5
+          const diff=current(depDate)
+        //   const diff=5
+          if(diff <= 7){
               console.log('get current weather');
               fetchCurrentWeather(
                   lat,
@@ -111,9 +114,21 @@ function getImage(
                   country,
                   countryCode,
                   img,
+                  diff,
                   WEATHERBIT_API_KEY
               );
-        
+              }else{
+                console.log('get predicted weather');
+                fetchFutureWeather(
+                    lat,
+                    lng,
+                    country,
+                    countryCode,
+                    img,
+                    diff,
+                    WEATHERBIT_API_KEY
+                );
+              }
       });
 }
 
@@ -124,6 +139,7 @@ function fetchCurrentWeather(
   country,
   countryCode,
   img,
+  diff,
   WEATHERBIT_API_KEY
 ) {
   console.log('fetching');
@@ -142,7 +158,7 @@ function fetchCurrentWeather(
           let description = data.data[0].weather.description;
           console.log(city, temperature, icon, description);
 
-          
+          const isInTime=diff+'days'
           updateUI(
               icon,
               description,
@@ -150,56 +166,57 @@ function fetchCurrentWeather(
               city,
               country,
               countryCode,
+              isInTime,
               img
           );
       });
 }
 
-// function fetchFutureWeather(
-//   lat,
-//   lng,
-//   country,
-//   countryCode,
-//   img,
-//   
-//   WEATHERBIT_API_KEY
-// ) {
-//   console.log('fetching');
+function fetchFutureWeather(
+  lat,
+  lng,
+  country,
+  countryCode,
+  img,
+  diff,
+  WEATHERBIT_API_KEY
+) {
+  console.log('fetching');
 
-//   //fetching weatherbit forecast
-//   fetch(
-//       `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${WEATHERBIT_API_KEY}`
-//   )
-//       //handling response
-//       .then((response) => response.json())
-//       .then((data) => {
-//           console.log(data);
+  //fetching weatherbit forecast
+  fetch(
+      `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${WEATHERBIT_API_KEY}`
+  )
+      //handling response
+      .then((response) => response.json())
+      .then((data) => {
+          console.log(data);
 
-//           //getting temperature icon description and city
-//           //of the day of departure
-//           let city = data.city_name;
-//           let temperature = data.data[dif].temp;
-//           
-//           let description = data.data[dif].weather.description;
-//           console.log(city, temperature, icon, description);
+          //getting temperature icon description and city
+          //of the day of departure
+          let city = data.city_name;
+          let temperature = data.data[dif].temp;
+          
+          let description = data.data[dif].weather.description;
+          console.log(city, temperature, icon, description);
 
-//           //hide loading icon
-//         //   showLoading(false);
+          //hide loading icon
+        //   showLoading(false);
 
-//           const isInTime = dif + ' days';
-//           //updating ui
-//           updateUI(
-//               icon,
-//               description,
-//               temperature,
-//               city,
-//               country,
-//               countryCode,
-//               isInTime,
-//               img
-//           );
-//       });
-// }
+          const isInTime = dif + ' days away';
+          //updating ui
+          updateUI(
+              icon,
+              description,
+              temperature,
+              city,
+              country,
+              countryCode,
+              isInTime,
+              img
+          );
+      });
+}
 //-------------------------------------------------------------//
 
 
@@ -210,20 +227,57 @@ function updateUI(
   city,
   country,
   countryCode,
-
+isInTime,
   img
 ) {
   image.src = img;
-
-weatherDes.innerHTML = description;
+  daysAway.innerHTML=isInTime
+weatherDes.innerHTML = "forecast:"+description;
   
-  weatherTemp.innerHTML = temperature;
+  weatherTemp.innerHTML = "temperature:"+temperature;
   
   if (country.length + city.length > 19) {
-      weatherTitle.innerHTML = `${city} ${countryCode}`;
+      weatherTitle.innerHTML = `Your Destination: ${city} ${countryCode}`;
   } else {
-      weatherTitle.innerHTML = `${city} ${country}`;
+      weatherTitle.innerHTML = `Your Destination: ${city} ${country}`;
   }
+
+  function current(depDate) {
+
+
+//     // const now=new Date()
+//     // function formatDate(date,format){
+//     //     const map = {
+//     //         yyyy: date.getFullYear(),
+//     //         mm: date.getMonth() + 1,dd: date.getDate(),
+//     //     }
+    
+//     //     return format.replace(/yyyy|mm|dd/gi, matched => map[matched])
+//     // }
+//     // let now1=formatDate(now,"yyyy-mm-dd")
+//     // console.log(now1);
+    
+//     let departure = document.getElementById('departure').value;
+// //             console.log(departure);
+    
+// // now1 = now1.split("-");
+// // var newDate = new Date( now1[2], now1[1] - 1, now1[0]);
+// // console.log(newDate.getTime());
+// // departure=departure.split('-')
+// // var newDate2=new Date(departure[2],departure[1]-1,departure[0])
+// // console.log(newDate2.getTime());
+// // const diffTime=newDate2 -newDate
+// // console.log(diffTime);
+// // const diffDays = (diffTime / (1000 * 60 * 60 * 24)); 
+// // const diffDays=4
+// // console.log(diffDays + " days");
+
+
+      return diff
+  }
+
+
+
 
   
   let save = document.getElementById('saveTrip');
@@ -236,7 +290,7 @@ weatherDes.innerHTML = description;
           city,
           country,
           countryCode,
-        //   isInTime,
+          isInTime,
           img,
       });
   });
