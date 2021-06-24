@@ -1,70 +1,65 @@
 const path=require('path')
 const express=require('express')
-const hbs=require('hbs')
-const dotenv = require('dotenv');
-const geonames=require('./utils/geonames')
-const pixaby=require('./utils/pixaby')
-const weatherbit=require('./utils/weatherbit')
+/* Dependencies */
+const bodyParser = require('body-parser')
 
+const app=express()
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+// Cors for cross origin allowance
+const cors = require('cors');
+app.use(express.static('public'));
+app.use(cors());
+
+const dotenv = require('dotenv');
+
+// const moment=require('moment')
 dotenv.config();
 
 const GEONAMES_USERNAME = process.env.GEONAMES_USERNAME;
 const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY;
 const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
-//define paths for express config
-const publicDirectoryPath=path.join(__dirname,'../public')
-const viewsPath=path.join(__dirname,'../templates/views')
-const partialsPath=path.join(__dirname,'../templates/partials')
-const app=express()
-const port=process.env.PORT || 2000
-//setup handle bars engine and views location
-app.set('view engine','hbs')
-app.set('views',viewsPath)
-hbs.registerPartials(partialsPath)
-//setup static directory to serve
-app.use(express.static(publicDirectoryPath))
 
-app.get('',(req,res)=>{
-    res.render('index',{
-        title:'weather App',
-        name:'praneetha'
-    })
-})
+const port=3000
 
-app.get('/weather',(req,res)=>
-{
-    if(!req.query.address){return res.send({
-             error:'you must provide an address'
-         })
-     }
-     geonames(req.query.address,(error,{lat,lon,placeName}={})=>{
-        if(error){
-           return  res.send({
-               error
-           })
-        }
-            weatherbit(lat,lon, (error, forecastdata) => {
-                if (error){
-                    return  res.send({error})
-                }
-                res.send({
-                    forecast:forecastdata,
-                    
-                    address:req.query.address
 
-                })
-                
-              })
-    }    
-    )
-})
 
-app.get('*',(req,res)=>{
-    res.render('404page',{
-        msg:'page not found',
-    })
-})
+
+app.get('/', function (req, res) {
+    res.sendFile('public/index.html');
+});
+
+app.get('/get_data', (req, res) => {
+    res.send({
+        GEONAMES_USERNAME: GEONAMES_USERNAME,
+        WEATHERBIT_API_KEY: WEATHERBIT_API_KEY,
+        PIXABAY_API_KEY: PIXABAY_API_KEY,
+    });
+});
 
 app.listen(port,()=>{
     console.log(`server is running on ${port}`);
+    
 })
+
+
+//GET route
+app.get('/return', getData);
+//sending last saved trip data
+function getData(request, response) {
+    response.send(projectData);
+}
+
+// POST route
+app.post('/add', postData);
+//receving saved trip data
+function postData(request, response) {
+    projectData = request.body;
+    response.send({ message: 'Post received' });
+    console.log(projectData);
+}
+
+
+
+
+

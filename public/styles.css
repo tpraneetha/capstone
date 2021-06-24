@@ -7,9 +7,15 @@ body{
     display: flex;
     flex-direction:column;
     min-height:100vh;
-}
+} 
 .main-content{
     flex-grow:1;
+}
+#destinationpic {
+    width: 50%;
+    margin-bottom: -6px;
+
+    border-top-left-radius: 8px;
 }
 header{
    margin-top:16px;

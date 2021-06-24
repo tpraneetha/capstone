@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- <link
+            rel="icon"
+            type="image/png"
+            href="./public/img/weather_icon.png"
+        /> -->
+
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+        />
+
+        <title>TravelAPP</title>
+    </head>
+    <body>
+        <h1>TravelAPP</h1>
+        <main>
+            <!-- <div id="background_loading"></div>
+            <div id="loadCont"><div id="loader"></div></div> -->
+
+            <div id="title">get your weather info</div>
+
+            <!-- <form onsubmit="Client.getcoordinates(event)"> -->
+                <div id="inp">
+                    <input
+                        type="text"
+                        id="destination"
+                        placeholder="I would like to travel to..."
+                    />
+                    <input type="date" id="departure" />
+
+                    <input type="submit" value="Submit" id="submit" />
+                </div>
+            <!-- </form> -->
+            <div id="uknownCard">
+                <img
+                    id="destinationpic" 
+                    
+                    
+                />
+                <article>
+                    <h2 id="desTitle">Destination</h2>
+                    <h3>Your trip is <em id="daysAway">days away</em></h3>
+
+                    
+                    <div id="dataCont">
+                        <h3 id="temperature">Temperature:</h3>
+                        <h3 id="forecast">Description</h3>
+                    </div>
+                </article>
+                <button id="saveTrip">Save Trip</button>
+            </div>
+        </main>
+        <script src='app.js'></script>
+        <!-- <script>
+            // Check that service workers are supported
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script> -->
+    </body>
+</html>
