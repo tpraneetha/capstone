@@ -27,7 +27,7 @@ function getcoordinates(e) {
   
   e.preventDefault();
   
-  fetch('http://localhost:3000/get_data')
+  fetch('http://localhost:5000/get_data')
       .then((res) => res.json())
       .then((keys) => {
           const GEONAMES_USERNAME = keys.GEONAMES_USERNAME;
