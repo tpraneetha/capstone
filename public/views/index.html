@@ -13,10 +13,10 @@
         <link type="stylesheet" href='/styles/styles.css'>
     </head>
     <body>
-        <h1>TravelAPP</h1>
+        <h1>Travel APP<em id='title'>get your forecast here</em></h1>
         <main>
            
-            <div id="title">get your weather info</div>
+            
 
             <form onsubmit="Client.getcoordinates(event)">
                 <div id="inp">
@@ -30,7 +30,7 @@
                     <input type="submit" value="Submit" id="submit" />
                 </div>
             </form>
-            <div id="uknownCard">
+            <div id="container">
                 <img
                     id="destinationpic" 
                     
@@ -49,7 +49,7 @@
                 <button id="saveTrip">Save Trip</button>
             </div>
         </main>
-       
+       <footer>@Praneetha</footer>
         <script>
             // Check that service workers are supported
             if ('serviceWorker' in navigator) {
