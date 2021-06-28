@@ -7,7 +7,7 @@
     "test": "jest",
     "start": "node src/app.js",
     "build-prod": "webpack --config webpack.prod.js",
-    "build-dev": "webpack-dev-serve --config webpack.dev.js --open"
+    "build-dev": "webpack serve --config webpack.dev.js --open"
   },
   "keywords": [],
   "author": "",

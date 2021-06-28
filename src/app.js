@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // Cors for cross origin allowance
 const cors = require('cors');
-app.use(express.static('public'));
+app.use(express.static('dist'));
 app.use(cors());
 
 const dotenv = require('dotenv');
@@ -26,7 +26,7 @@ const port=3000
 
 
 app.get('/', function (req, res) {
-    res.sendFile('public/index.html');
+    res.sendFile('dist/index.html');
 });
 
 app.get('/get_data', (req, res) => {

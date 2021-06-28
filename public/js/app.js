@@ -23,9 +23,9 @@ const daysAway = document.getElementById('daysAway');
 const departure= document.getElementById('departure');
 document.getElementById("submit").addEventListener("click", getcoordinates);
 
-function getcoordinates(event) {
+function getcoordinates(e) {
   
-  event.preventDefault();
+  e.preventDefault();
   
   fetch('http://localhost:3000/get_data')
       .then((res) => res.json())
@@ -33,22 +33,22 @@ function getcoordinates(event) {
           const GEONAMES_USERNAME = keys.GEONAMES_USERNAME;
           const PIXABAY_API_KEY = keys.PIXABAY_API_KEY;
           const WEATHERBIT_API_KEY = keys.WEATHERBIT_API_KEY;
-          console.log(GEONAMES_USERNAME);
-    console.log(WEATHERBIT_API_KEY);
-    console.log(PIXABAY_API_KEY);
+    //       console.log(GEONAMES_USERNAME);
+    // console.log(WEATHERBIT_API_KEY);
+    // console.log(PIXABAY_API_KEY);
     // const now=moment().format("DD-MM-YYYY")
             const destination = document.getElementById('destination').value;
             let departure = document.getElementById('departure').value;
             
-            console.log(departure);
+            // console.log(departure);
             if (destination === '' || departure === '') {
-                console.log('user enter no input');
+                // console.log('user enter no input');
                 return 'empty';
             }
 
             
-            console.log(destination);
-            console.log(departure);
+            // console.log(destination);
+            // console.log(departure);
 
             
             
@@ -59,13 +59,13 @@ function getcoordinates(event) {
                 .then((response) => response.json())
                 .then((data) => {
                     
-                    console.log(data);
+                    // console.log(data);
 
                     const country = data.geonames[0].countryName;
                     const countryCode = data.geonames[0].countryCode;
                     const lat = data.geonames[0].lat;
                     const lng = data.geonames[0].lng;
-                    console.log(country, lat, lng);
+                    // console.log(country, lat, lng);
 
                     
                     getImage(
@@ -90,7 +90,7 @@ function getImage(
   PIXABAY_API_KEY,
   WEATHERBIT_API_KEY
 ) {
-  console.log('Fetching pixabay');
+  
 
   
   fetch(
@@ -99,9 +99,9 @@ function getImage(
       //handling response
       .then((response) => response.json())
       .then((data) => {
-          console.log(data);
+        //   console.log(data);
           const img = data.hits[0].webformatURL;
-          console.log(img);
+        //   console.log(img);
           let diff=current(departure)
 
 
@@ -122,21 +122,21 @@ function getImage(
             console.log(now1);
             now1 = now1.split("-");
         var newDate = new Date( now1[2], now1[1] - 1, now1[0]);
-        console.log(newDate.getTime());
+        // console.log(newDate.getTime());
 
 
             let then = depDate
-                    console.log(then);
+                    // console.log(then);
             
         
         then=then.split('-')
         var newDate2=new Date(then[2],then[1]-1,then[0])
-        console.log(newDate2.getTime());
+        // console.log(newDate2.getTime());
         const diffTime=newDate2 -newDate
-        console.log(diffTime);
+        // console.log(diffTime);
         const diff = (diffTime / (1000 * 60 * 60 * 24)); 
         // // const diffDays=4
-        console.log(diff + " days");
+        // console.log(diff + " days");
         
         
               return diff
@@ -146,7 +146,7 @@ function getImage(
           
         //   const diff=8
           if(diff <= 7){
-              console.log('get current weather');
+            //   console.log('get current weather');
               fetchCurrentWeather(
                   lat,
                   lng,
@@ -157,7 +157,7 @@ function getImage(
                   WEATHERBIT_API_KEY
               );
               }else{
-                console.log('get predicted weather');
+                // console.log('get predicted weather');
                 fetchFutureWeather(
                     lat,
                     lng,
@@ -181,7 +181,7 @@ function fetchCurrentWeather(
   diff,
   WEATHERBIT_API_KEY
 ) {
-  console.log('fetching');
+//   console.log('fetching');
   
   fetch(
       `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${WEATHERBIT_API_KEY}`
@@ -189,7 +189,8 @@ function fetchCurrentWeather(
       
       .then((response) => response.json())
       .then((data) => {
-          console.log(data);
+          console.log('//////');
+          console.log(data.data[0].temp);
           
           let city = data.data[0].city_name;
           let temperature = data.data[0].temp;
@@ -220,7 +221,7 @@ function fetchFutureWeather(
   diff,
   WEATHERBIT_API_KEY
 ) {
-  console.log('fetching');
+//   console.log('fetching');
 
   //fetching weatherbit forecast
   fetch(
@@ -231,19 +232,17 @@ function fetchFutureWeather(
       .then((data) => {
           console.log(data);
 
-          //getting temperature icon description and city
-          //of the day of departure
+          
           let city = data.city_name;
           let temperature = data.data[diff].temp;
           let icon = data.data[diff].weather.icon;
           let description = data.data[diff].weather.description;
           console.log(city, temperature, description);
 
-          //hide loading icon
-        //   showLoading(false);
+
 
           const isInTime = diff + ' days away';
-          //updating ui
+          
           updateUI(
             icon,
             description,
@@ -321,18 +320,18 @@ weatherDes.innerHTML = "forecast:"+description;
 
 async function getServerData() {
     const response = await fetch('/return');
-    const latestEntry = await response.json();
+    const newEntry = await response.json();
     // checking if there is a icon attribute
-    if (latestEntry && latestEntry.icon) {
+    if (newEntry ) {
         updateUI(
-            latestEntry.icon,
-            latestEntry.description,
-            latestEntry.temperature,
-            latestEntry.city,
-            latestEntry.country,
-            latestEntry.countryCode,
-            latestEntry.isInTime,
-            latestEntry.img
+            newEntry.icon,
+            newEntry.description,
+            newEntry.temperature,
+            newEntry.city,
+            newEntry.country,
+            newEntry.countryCode,
+            newEntry.isInTime,
+            newEntry.img
         );
     }
 }
@@ -347,3 +346,12 @@ async function postData(url, data) {
         body: JSON.stringify(data),
     });
 }
+export {
+    
+    // current,
+    updateUI,
+    fetchCurrentWeather,
+    fetchFutureWeather,
+    getImage,
+    getcoordinates,
+};
