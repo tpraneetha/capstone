@@ -43,23 +43,6 @@ app.listen(port,()=>{
 })
 
 
-//GET route
-app.get('/return', getData);
-//sending last saved trip data
-function getData(request, response) {
-    response.send(projectData);
-}
-
-// POST route
-app.post('/add', postData);
-//receving saved trip data
-function postData(request, response) {
-    projectData = request.body;
-    response.send({ message: 'Post received' });
-    console.log(projectData);
-}
-
-
 
 
 

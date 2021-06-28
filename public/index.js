@@ -1,5 +1,5 @@
-import { getcoordinates } from './js/app';
+import { getKeys } from './js/app';
 
 import './styles/styles.scss';
 
-export { getcoordinates };
+export { getKeys };

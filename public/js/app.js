@@ -15,6 +15,8 @@
 
 
 // const moment=require('moment')
+
+//Accessing the dom elements
 const weatherTemp = document.getElementById('temperature');
 const weatherDes = document.getElementById('forecast');
 const weatherTitle = document.getElementById('desTitle');
@@ -23,11 +25,13 @@ const daysAway = document.getElementById('daysAway');
 const departure= document.getElementById('departure');
 document.getElementById("submit").addEventListener("click", getcoordinates);
 
-function getcoordinates(e) {
+
+//getting access to keys
+function getKeys(e) {
   
   e.preventDefault();
   
-  fetch('http://localhost:5000/get_data')
+  fetch('http://localhost:3000/get_data')
       .then((res) => res.json())
       .then((keys) => {
           const GEONAMES_USERNAME = keys.GEONAMES_USERNAME;
@@ -255,7 +259,7 @@ function fetchFutureWeather(
           );
       });
 }
-//-------------------------------------------------------------//
+
 
 
 function updateUI(
@@ -300,7 +304,7 @@ weatherDes.innerHTML = "forecast:"+description;
   });
 }
 
-//-----------------------------
+
 /////////////////////////////////
 //calculation of days from now to then
 //     function current(dep){
@@ -318,34 +322,7 @@ weatherDes.innerHTML = "forecast:"+description;
 
 
 
-async function getServerData() {
-    const response = await fetch('/return');
-    const newEntry = await response.json();
-    // checking if there is a icon attribute
-    if (newEntry ) {
-        updateUI(
-            newEntry.icon,
-            newEntry.description,
-            newEntry.temperature,
-            newEntry.city,
-            newEntry.country,
-            newEntry.countryCode,
-            newEntry.isInTime,
-            newEntry.img
-        );
-    }
-}
 
-
-async function postData(url, data) {
-    await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        // Body data type must match "Content-Type" header
-        body: JSON.stringify(data),
-    });
-}
 export {
     
     // current,
@@ -353,5 +330,5 @@ export {
     fetchCurrentWeather,
     fetchFutureWeather,
     getImage,
-    getcoordinates,
+    getKeys,
 };
