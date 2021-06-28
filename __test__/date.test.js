@@ -1,4 +1,4 @@
-import {current} from '../public/js/date'
+import {current} from '../client/js/date'
 
 describe('current to be defined', () => {
     test('ensure app exists', () => {
