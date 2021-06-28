@@ -1,8 +1,6 @@
-import { app } from '../src/app'
+import { keys } from '../src/keys';
 
 
-describe('app to be defined', () => {
-    test('ensure app exists', () => {
-        expect(app).toBeDefined();
-    })
-})
+test('checking if the pixabay key is included', () => {
+    expect(keys('PIXABAY_API_KEY')).not.toBe('');
+});
