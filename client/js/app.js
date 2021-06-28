@@ -27,7 +27,7 @@ function getKeys(e) {
             const destination = document.getElementById('destination').value;
             let departure = document.getElementById('departure').value;
             
-            // console.log(departure);
+           
             if (destination === '' || departure === '') {
                 // console.log('user enter no input');
                 return 'empty';
@@ -78,7 +78,7 @@ function getImage(
       .then((data) => {
        
           const img = data.hits[0].webformatURL;
-        //   console.log(img);
+          console.log(img);
           let diff=current(departure)
 
 
@@ -127,17 +127,16 @@ function fetchCurrentWeather(
       
       .then((response) => response.json())
       .then((data) => {
-          
+          console.log(data);
           
           let city = data.data[0].city_name;
           let temperature = data.data[0].temp;
-          let icon = data.data[0].weather.icon;
+          // let icon = data.data[0].weather.icon;
           let description = data.data[0].weather.description;
-          console.log(city, temperature, icon, description);
 
           const daysToTravel=diff+'days'
           updateUI(
-              icon,
+              // icon,
               description,
               temperature,
               city,
@@ -165,18 +164,18 @@ function fetchFutureWeather(
       //handling response
       .then((response) => response.json())
       .then((data) => {
-          console.log(data);
+         
 
           
           let city = data.city_name;
           let temperature = data.data[diff].temp;
-          let icon = data.data[diff].weather.icon;
+          // let icon = data.data[diff].weather.icon;
           let description = data.data[diff].weather.description;
          
           const daysToTravel = diff + ' days away';
           
           updateUI(
-            icon,
+            // icon,
             description,
             temperature,
             city,
@@ -191,13 +190,13 @@ function fetchFutureWeather(
 
 
 function updateUI(
-  icon,
+  // icon/,
   description,
   temperature,
   city,
   country,
   countryCode,
-daysToTravel,
+  daysToTravel,
   img
 ) {
   image.src = img;
