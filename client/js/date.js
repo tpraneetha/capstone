@@ -1,3 +1,4 @@
+var moment=require('moment')
 function current(depDate){
     const now=moment()   
  console.log(now);

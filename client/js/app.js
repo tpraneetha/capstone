@@ -8,7 +8,8 @@ const weatherDes = document.getElementById('forecast');
 const weatherTitle = document.getElementById('desTitle');
 const image = document.getElementById('destinationpic');
 const daysAway = document.getElementById('daysAway');
-const departure= document.getElementById('departure');
+const departure= document.getElementById('departure').value;
+console.log(departure);
 document.getElementById("submit").addEventListener("click", getKeys);
 
 
@@ -29,7 +30,7 @@ function getKeys(e) {
             
            
             if (destination === '' || departure === '') {
-                // console.log('user enter no input');
+                console.log(' input has to be provided');
                 return 'empty';
             }
 
@@ -80,7 +81,7 @@ function getImage(
           const img = data.hits[0].webformatURL;
           console.log(img);
           let diff=current(departure)
-
+// let diff=5
 
         if(diff <= 7){
             
@@ -131,12 +132,11 @@ function fetchCurrentWeather(
           
           let city = data.data[0].city_name;
           let temperature = data.data[0].temp;
-          // let icon = data.data[0].weather.icon;
           let description = data.data[0].weather.description;
 
           const daysToTravel=diff+'days'
           updateUI(
-              // icon,
+              
               description,
               temperature,
               city,
@@ -165,17 +165,17 @@ function fetchFutureWeather(
       .then((response) => response.json())
       .then((data) => {
          
-
+console.log(data);
           
           let city = data.city_name;
           let temperature = data.data[diff].temp;
-          // let icon = data.data[diff].weather.icon;
+          
           let description = data.data[diff].weather.description;
          
           const daysToTravel = diff + ' days away';
           
           updateUI(
-            // icon,
+            
             description,
             temperature,
             city,
@@ -190,7 +190,7 @@ function fetchFutureWeather(
 
 
 function updateUI(
-  // icon/,
+  
   description,
   temperature,
   city,
@@ -218,16 +218,25 @@ weatherDes.innerHTML = "forecast:"+description;
 /////////////////////////////////
 //calculation of days from now to then
     function current(dep){
-   const now=moment()   
-console.log(now);
-let then = document.querySelector('#departure').value
-console.log(then);
-const ms = 
-moment(then,"DD/MM/YYYY").diff(moment(now,"DD/MM/YYYY"));
-const duration = duration(ms, 'milliseconds');
-const dif = duration.asDays();
-console.log(dif);
-return dif
+      console.log(dep);
+      var now = moment().format('YYYY-MM-DD');
+      var departure = moment(dep).format('YYYY-MM-DD');
+  
+      now = now.split('-');
+      departure = departure.split('-');
+  
+      //month starts at 0 that's why we subtract 1
+      var a = moment([Number(now[0]), Number(now[1]) - 1, Number(now[2])]);
+      var b = moment([
+          Number(departure[0]),
+          Number(departure[1]) - 1,
+          Number(departure[2]),
+      ]);
+  
+      const dif = b.diff(a, 'days');
+      console.log(dif);
+      return dif;
+  
 }
 
 
