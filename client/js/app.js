@@ -2,14 +2,16 @@ const moment = require('moment')
 
 //Accessing the dom elements
 const weatherTemp = document.getElementById('temperature');
+const popul=document.getElementById('population');
 const weatherDes = document.getElementById('forecast');
 const weatherTitle = document.getElementById('desTitle');
 const image = document.getElementById('destinationpic');
 const daysAway = document.getElementById('daysAway');
 const departure = document.getElementById('departure').value;
 console.log(departure);
+getServerData();
 document.getElementById("submit").addEventListener("click", getKeys);
-const population=document.getElementById('population')
+
 
 //getting access to keys
 function getKeys(e) {
@@ -244,7 +246,7 @@ function updateUI(
     weatherDes.innerHTML = "forecast:" + description;
 
     weatherTemp.innerHTML = "temperature:" + temperature;
-    population.innerHTML="population:"+population;
+    popul.innerHTML=parseInt(population);
 
     if (country.length + city.length > 19) {
         weatherTitle.innerHTML = `Your Destination: ${city} ${countryCode}`;
@@ -293,3 +295,35 @@ export {
     getKeys,
     getDetails
 }
+///////////////
+//post data 
+async function postData(url, data) {
+  await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+  });
+}
+
+// get data from server
+
+async function getServerData() {
+  const response = await fetch('/back');
+  const newData = await response.json();
+  
+  if (newData) {
+      updateUI(
+          
+        newData.description,
+        newData.temperature,
+        newData.city,
+        newData.country,
+        newData.countryCode,
+        newData.isInTime,
+        newData.img,
+        newData.population
+      );
+  }
+}
+

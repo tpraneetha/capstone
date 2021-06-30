@@ -43,3 +43,20 @@ app.listen(port, () => {
     console.log(`server is running on ${port}`);
 
 })
+// Post data
+app.post('/add', postData);
+
+function postData(request, response) {
+    projectData = request.body;
+    response.send({ message: 'Post received' });
+    console.log(projectData);
+}
+// Get data
+app.get('/back', getData);
+
+function getData(request, response) {
+    console.log(projectData);
+    response.send(projectData);
+}
+
+
