@@ -77,7 +77,7 @@ function getDetails(
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        const  population=data[0].population;
+        let population=data[0].population;
         console.log(population);
         getImage(
                         country,
@@ -87,6 +87,7 @@ function getDetails(
                         departure,
                         population,
                         PIXABAY_API_KEY,
+                        WEATHERBIT_API_KEY
                         );
                     
                       });
