@@ -11,7 +11,7 @@ body{
 main{
     display:grid;
     height: 80vh;
-    grid-template-rows: repeat(8,minmax(min-content,16rem));
+    grid-template-rows: repeat(8,minmax(min-content,1fr));
     grid-template-columns: repeat(3,1fr);
     grid-row-gap:1.6rem;
     background-color: antiquewhite;
@@ -54,6 +54,9 @@ h1{
     cursor: pointer;
     text-align: center;
     border:.1rem solid ;
+}
+.btnSubmit:hover{
+background-color: aquamarine;
 }
 #container{
 grid-row:2/8;
@@ -107,4 +110,12 @@ footer{
     border-top:1px solid #eeeeee;
     margin-top: 16px;
     padding:16px 0;
+}
+@media(max-width:300px){
+   footer{
+    grid-row:8/-1;
+    grid-column: 2/3;
+    background:#888888;
+    
+   } 
 }

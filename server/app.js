@@ -1,10 +1,12 @@
-const path=require('path')
-const express=require('express')
+const path = require('path')
+const express = require('express')
 /* Dependencies */
 const bodyParser = require('body-parser')
 
-const app=express()
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express()
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(bodyParser.json());
 // Cors for cross origin allowance
 const cors = require('cors');
@@ -20,12 +22,12 @@ const GEONAMES_USERNAME = process.env.GEONAMES_USERNAME;
 const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY;
 const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 
-const port=3000
+const port = 3000
 
 
 
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
     res.sendFile('dist/index.html');
 });
 
@@ -37,12 +39,7 @@ app.get('/get_data', (req, res) => {
     });
 });
 
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`server is running on ${port}`);
-    
+
 })
-
-
-
-
-
